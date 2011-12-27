@@ -13,7 +13,68 @@
 		<script type="text/javascript" src="app.js"></script>
 	</head>
 	<body>
+	<!--'College List' Page-->
+	<div id="collegeList" data-role="page">
+		<header data-role="header">
+			<h1>My Colleges</h1>
+			<a href="#addCollege" data-role="button" data-icon="plus" data-iconpos="notext" class="ui-btn-right">Add</a>
+		</header>
+		<div data-role="content">
+			<!--Content-->
+		</div>
+		<footer data-role="footer" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#collegeList" class="ui-btn-active" data-icon="home" data-iconpos="top">Home</a></li>
+					<li><a href="#profile" data-icon="gear" data-iconpos="top">Profile</a></li>
+				</ul>
+			</div>
+		</footer>
+	</div>
 	
+	<!--'College Detail' Page-->
+	<div id="collegeDetail" data-role="page">
+		<header data-role="header">
+			<a href="#" data-role="button" data-rel="back" data-icon="arrow-l">Back</a>
+			<h1>College Name</h1>
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#" class="collegeInfo-link" data-role="button" class="ui-btn-active">Info</a></li>
+					<li><a href="#" class="collegeTasks-link" data-role="button">Tasks</a></li>
+				</ul>
+			</div>
+		</header>
+		<div data-role="content">
+			<!--Content-->
+		</div>
+		<footer data-role="footer" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#collegeList">Home</a></li>
+					<li><a href="#profile">Profile</a></li>
+				</ul>
+			</div>
+		</footer>
+	</div>
+	
+	<!--'Profile' Page-->
+	<div id="profile" data-role="page">
+		<header data-role="header">
+			<h1>My Profile</h1>
+			<a href="#editProfile" data-role="button" data-icon="plus" data-iconpos="notext" class="ui-btn-right">Edit</a>
+		</header>
+		<div data-role="content">
+			<!--Content-->
+		</div>
+		<footer data-role="footer" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#collegeList" data-icon="home" data-iconpos="top">Home</a></li>
+					<li><a href="#profile" data-icon="home" data-iconpos="top" class="ui-btn-active">Profile</a></li>
+				</ul>
+			</div>
+		</footer>
+	</div>
 	
 	</body>
 </html>	
