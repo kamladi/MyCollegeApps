@@ -4,6 +4,7 @@
 		<title>My College Apps</title>
 		<!--mobile webapp config-->
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<!--CSS-->
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
 		<link rel="stylesheet" href="style.css" />
@@ -74,6 +75,41 @@
 				</ul>
 			</div>
 		</footer>
+	</div>
+	
+	<!--'Add College' Page-->
+	<div id="addCollege" data-role="page">
+		<header data-role="header">
+			<a href="#" data-role="button" data-rel="back" data-icon="arrow-l">Back</a>
+			<h1>Add College</h1>
+		</header>
+		<div data-role="content">
+			<form action="" method="" id="addCollegeForm">
+					<label for="name">Name: </label>
+					<input type="text" id="name" name="name"/>
+					<br />
+					<label for="deadline">Deadline: </label>
+					<input type="date" id="deadline" name="deadline"/>
+					<br />
+					<label for="address">Address: </label>
+					<textarea id="address" name="address"></textarea>
+					<br />
+					<label for="notes">Notes: </label>
+					<textarea id="notes" name="notes"></textarea>
+				<a href="#" id="addCollegeSubmit" data-role="button" class="form-submit-btn">Add</a>
+			</form>
+		</div>
+	</div>
+	
+	<!--Error Dialog Page-->
+	<!--this page is called using <a href="#errorPage" data-rel="dialog"></a>-->
+	<div id="errorPage" data-role="page">
+		<header data-role="header">
+			<h2>Error</h2>
+		</header>
+		<div data-role="content">
+			<!--Content to be entered programmatically when needed-->
+		</div>
 	</div>
 	
 	</body>
