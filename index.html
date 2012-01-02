@@ -4,71 +4,22 @@
 		<title>My College Apps</title>
 		<!--mobile webapp config-->
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<!--CSS-->
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.css" />
 		<link rel="stylesheet" href="style.css" />
 		<!--JS-->
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script type="text/javascript">
+		//Workaround to allow use of Backbone's routers
+		$(document).bind("mobileinit", function(){
+			$.mobile.ajaxEnabled = false;
+			$.mobile.hashListeningEnabled = false;
+		});
+		</script>
 		<script src="http://code.jquery.com/mobile/1.0/jquery.mobile-1.0.min.js"></script>
 		<script src="underscore.js" type="text/javascript" charset="utf-8"></script>
 		<script src="backbone.js" type="text/javascript" charset="utf-8"></script>
-		<script src="ICanHaz.js" type="text/javascript" charset="utf-8"></script>
-		
-		<!--ICanHaz templates-->
-		<script id="collegeList-tmpl" type="text/html">
-			<li>
-				<h3 class="name">{{ name }}</h3>
-				<p>Due <span class="deadline">{{ deadline }}</p>
-			</li>
-		</script>
-		
-		<script id="collegeDetail-tmpl" type="text/html">
-			<!--'College Detail' Page-->
-			<div id="collegeDetail" data-role="page">
-				<header data-role="header">
-					<a href="#" data-role="button" data-rel="back" data-icon="arrow-l">Back</a>
-					<h1>{{ name }}</h1>
-					<div data-role="navbar">
-						<ul>
-							<li><a href="#" class="college-info-link" data-role="button" class="ui-btn-active">Info</a></li>
-							<li><a href="#" class="college-tasks-link" data-role="button">Tasks</a></li>
-						</ul>
-					</div>
-				</header>
-				<div id="college-detail-content" data-role="content">
-					<!--Content-->
-					<section class="college-info">
-						<form action="" method="" id="addCollegeForm">
-								<label for="name">Name: </label>
-								<input type="text" id="name" name="name" value="{{ name }}"/>
-								<br />
-								<label for="deadline">Deadline: </label>
-								<input type="date" id="deadline" name="deadline" value="{{ deadline }}"/>
-								<br />
-								<label for="address">Address: </label>
-								<textarea id="address" name="address" value="{{ address }}"></textarea>
-								<br />
-								<label for="notes">Notes: </label>
-								<textarea id="notes" name="notes" value="{{ notes }}"></textarea>
-							<a href="#" id="addCollegeSubmit" data-role="button" class="form-submit-btn">Save Changes</a>
-						</form>
-					</section>
-					<section class="college-tasks" style="display: none;">
-						<p>TODO: CREATE TEMPLATE AND MODEL 
-						STRUCTURE FOR TASKS</p>
-					</section>
-				</div>
-				<footer data-role="footer" data-position="fixed">
-					<div data-role="navbar">
-						<ul>
-							<li><a href="#collegeList">Home</a></li>
-							<li><a href="#profile">Profile</a></li>
-						</ul>
-					</div>
-				</footer>
-			</div>
-		</script>
+		<script src="College.js" type="text/javascript"></script>
 		<script type="text/javascript" src="app.js"></script>
 	</head>
 	<body>
@@ -76,18 +27,144 @@
 	<div id="collegeList" data-role="page">
 		<header data-role="header">
 			<h1>My Colleges</h1>
-			<a href="#addCollege" data-role="button" data-icon="plus" data-iconpos="notext" class="ui-btn-right">Add</a>
+			<a href="#" id="addCollege" data-role="button" data-icon="plus" data-iconpos="notext" class="ui-btn-right">Add</a>
 		</header>
 		<div data-role="content">
-			<ul id="college-list" data-role="listview">
-				<!--Content-->
-			</ul>
+			<!--Content-->
 		</div>
 		<footer data-role="footer" data-position="fixed">
 			<div data-role="navbar">
 				<ul>
 					<li><a href="#collegeList" class="ui-btn-active" data-icon="home" data-iconpos="top">Home</a></li>
 					<li><a href="#profile" data-icon="gear" data-iconpos="top">Profile</a></li>
+				</ul>
+			</div>
+		</footer>
+	</div>
+	
+	<!--'College Detail' Page-->
+	<div id="collegeDetail" data-role="page">
+		<header data-role="header">
+			<a href="#" data-role="button" data-rel="back" data-icon="arrow-l">Back</a>
+			<h1>College Name</h1>
+			<a href="#" id="save" data-role="button" data-rel="back">Save</a>
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#" class="collegeInfo-link" data-role="button" class="ui-btn-active">Info</a></li>
+					<li><a href="#" class="collegeTasks-link" data-role="button">Tasks</a></li>
+				</ul>
+			</div>
+		</header>
+		<div data-role="content">
+			<!--Content-->
+			<script type="text/template" id="detail-template">
+				<section id="collegeInfo">
+					<form method="" action="">
+						<label for="name">Name: </label>
+						<input type="text" id="name" name="name" value="<%= name %>" />
+						<br />
+						<label for="deadline">Name: </label>
+						<input type="date" id="deadline" name="deadline" value="<%= deadline %>" />
+						<br />
+						<label for="address">Name: </label>
+						<textarea id="address" name="address" value="<%= address %>"></textarea>
+						<br />
+						<label for="notes">Name: </label>
+						<textarea id="notes" name="notes" value="<%= notes %>" ></textarea>
+						<a href="#" id="delete" data-role="button" style="width: 60%;">Delete College</a>
+					</form>
+				</section>
+				<section id="collegeTasks" style="display: none;">
+					<p align="center">Swipe across a task to mark it as done</p>
+					<div data-role="collapsible-set">
+						<!--Application-->
+						<div data-role="collapsible" data-collapsed="false">
+							<h2>Application</h2>
+							<ul class="applications" data-role="listview" data-inset="true">
+								<li><h3 class="<% if(app_sent != 'incomplete') {print('complete');} %>">Application Mailed/Emailed</h3>
+									<p class="status"><%= app_sent %></p>
+								</li>
+								<li><h3 class="<% if(app_confirm != 'incomplete') {print('complete');} %>">Confirmation received from college</h3>
+									<p class="status"><%= app_confirm %></p>
+								</li>
+							</ul>
+						</div>
+
+						<!--Recommendations-->
+						<div data-role="collapsible" data-collapsed="true">
+							<h2>Recommendations</h2>
+							<ul class="recommendations" data-role="listview" data-inset="true">
+								<li><h3 class="<% if(app_confirm != 'incomplete') {print('complete');} %>">Recommendation form given to each recommender</h3>
+									<p class="status"><%= rec_given %></p>
+								</li>
+								<li><h3 class="<% if(app_confirm != 'incomplete') {print('complete');} %>">Recommendations Mailed/Uploaded</h3>
+									<p class="status"><%= rec_sent %></p>
+								</li>
+								<li><h3 class="<% if(app_confirm != 'incomplete') {print('complete');} %>">Confirmation received from college</h3>
+									<p class="status"><%= rec_confirm %></p>
+								</li>
+							</ul>
+						</div>
+
+						<!--Transcripts-->
+						<div data-role="collapsible" data-collapsed="true">
+							<h2>Transcripts</h2>
+							<ul class="transcripts" data-role="listview" data-inset="true">
+								<li><h3 class="<% if(app_confirm != 'incomplete') {print('complete');} %>">Transcript request form given to counselor</h3>
+									<p class="status"><%= transcript_given %></p>
+								</li>
+								<li><h3 class="<% if(app_confirm != 'incomplete') {print('complete');} %>">Transcripts mailed to college</h3>
+									<p class="status"><%= transcript_sent %></p>
+								</li>
+								<li><h3 class="<% if(app_confirm != 'incomplete') {print('complete');} %>">Confirmation received from college</h3>
+									<p class="status"><%= transcript_confirm %></p>
+								</li>
+							</ul>
+						</div>
+
+						<!--Test Scores-->
+						<div data-role="collapsible" data-collapsed="true">
+							<h2>Test Scores</h2>
+							<ul class="testScores" data-role="listview" data-inset="true">
+								<li><h3 class="<% if(test_sat != 'incomplete') {print('complete');} %>">SAT, SAT II Scores</h3>
+									<p class="status"><%= test_sat %></p>
+								</li>
+								<li><h3 class="<% if(test_ap != 'incomplete') {print('complete');} %>">AP Scores</h3>
+									<p class="status"><%= test_ap %></p>
+								</li>
+								<li><h3 class="<% if(test_act != 'incomplete') {print('complete');} %>">ACT Scores</h3>
+									<p class="status"><%= test_act %></p>
+								</li>
+								<li><h3 class="<% if(test_confirm != 'incomplete') {print('complete');} %>">Confirmation received from college</h3>
+									<p class="status"><%= test_confirm %></p>
+								</li>
+							</ul>
+						</div>
+
+						<!--Financial Aid Forms-->
+						<div data-role="collapsible" data-collapsed="true">
+							<h2>Financial Aid</h2>
+							<ul class="financialAid" data-role="listview" data-inset="true">
+								<li><h3 class="<% if(fin_fafsa != 'incomplete') {print('complete');} %>">FAFSA form submitted</h3>
+									<p class="status"><%= fin_fafsa %></p>
+								</li>
+								<li><h3 class="<% if(fin_profile != 'incomplete') {print('complete');} %>">Profile form submitted</h3>
+									<p class="status"><%= fin_profile %></p>
+								</li>
+								<li><h3 class="<% if(fin_confirm != 'incomplete') {print('complete');} %>">Confirmation received from college</h3>
+									<p class="status"><%= fin_confirm %></p>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+			</script><!--end content template-->
+		</div>
+		<footer data-role="footer" data-position="fixed">
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#collegeList">Home</a></li>
+					<li><a href="#profile">Profile</a></li>
 				</ul>
 			</div>
 		</footer>
@@ -110,41 +187,6 @@
 				</ul>
 			</div>
 		</footer>
-	</div>
-	
-	<!--'Add College' Page-->
-	<div id="addCollege" data-role="page">
-		<header data-role="header">
-			<a href="#" data-role="button" data-rel="back" data-icon="arrow-l">Back</a>
-			<h1>Add College</h1>
-		</header>
-		<div data-role="content">
-			<form action="" method="" id="addCollegeForm">
-					<label for="name">Name: </label>
-					<input type="text" id="name" name="name"/>
-					<br />
-					<label for="deadline">Deadline: </label>
-					<input type="date" id="deadline" name="deadline"/>
-					<br />
-					<label for="address">Address: </label>
-					<textarea id="address" name="address"></textarea>
-					<br />
-					<label for="notes">Notes: </label>
-					<textarea id="notes" name="notes"></textarea>
-				<a href="#" id="addCollegeSubmit" data-role="button" class="form-submit-btn">Add</a>
-			</form>
-		</div>
-	</div>
-	
-	<!--Error Dialog Page-->
-	<!--this page is called using <a href="#errorPage" data-rel="dialog"></a>-->
-	<div id="errorPage" data-role="page">
-		<header data-role="header">
-			<h2>Error</h2>
-		</header>
-		<div data-role="content">
-			<!--Content to be entered programmatically when needed-->
-		</div>
 	</div>
 	
 	</body>
